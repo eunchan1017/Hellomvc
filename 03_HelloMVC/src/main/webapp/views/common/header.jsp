@@ -12,15 +12,17 @@
 <script src="${path }/js/jquery-3.7.1.min.js"></script>
 </head>
 <body>
+
 <div id="containder">
 	<header>
 		<h1>HelloMVC</h1>
 		<div class="login-container">
-			<form id="loginFrm" action="" method="post">
+		<c:if test="${empty sessionScope.loginMember}">
+			<form id="loginFrm" action="${pageContext.request.contextPath }/login.do" method="post">
 				<table>
 					<tr>
 						<td>
-							<input type="text" name="userId" id="userId">
+							<input type="text" name="userId" id="userId"placeholder="아이디입력"value="${cookie.saveId!=null?cookie.saveId.value:'' }">
 						</td>
 						<td>
 						</td>
@@ -35,12 +37,32 @@
 					</tr>
 					<tr>
 						<td colspan="2">
-							<input type="checkbox" name="saveId" id="saveId"><label for="saveId">아이디저장</label>
-							<input type="button" value="회원가입">
+							<input type="checkbox" name="saveId" id="saveId" ${cookie.saveId!=null?"checked":""}>
+							<label for="saveId" >아이디저장</label>
+							<input type="button" value="회원가입" onclick="location.replace('${path}/enrollmember.do')">
 						</td>
 					</tr>
 				</table>
 			</form>
+		</c:if>
+		<c:if test="${not empty sessionScope.loginMember }">
+			<table id="logged-in">
+				<tr>
+					<td colspan="2">
+						${sessionSope.loginMember.uesrName }님, 환영합니다. :)
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<input type="button" value="내정보보기">
+					</td>
+					<td>
+						<input type="button" value="로그아웃" onclick="location.replace('${path}/logout.do')">
+					</td>
+					
+				</tr>
+			</table>
+		</c:if>
 		</div>
 		<nav>
 			<ul class="main-nav">
